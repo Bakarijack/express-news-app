@@ -1,0 +1,76 @@
+<div class="container">
+
+    <div class="row justify-content-center">
+
+
+        <form class="col-lg-6 col-md-6 col-sm-10" id="signUp-form">
+            <h3 class="mt-5">Sign Up Form</h3>
+            <div id="alertDiv" class="alert">
+            </div>
+            <div>
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" autocomplete="off" name="username" required>
+            </div>
+            <div>
+                <label for="user_email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="user_email" autocomplete="off" name="user_email" required>
+            </div>
+            <div>
+                <label for="user_password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" autocomplete="off" name="user_password"
+                    required>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        const title = document.querySelector('title');
+        title.innerHTML = 'Sign up'
+        const form = document.getElementById('signUp-form');
+        form.addEventListener('submit', signUpUser);
+
+        async function signUpUser(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('user_email').value;
+            const password = document.getElementById('password').value
+
+            const result = await fetch('/api/signup/process', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password
+                })
+            }).then(res => res.json());
+
+
+
+            if (result.status === 'ok') {
+                displayMessage("alert-success", result.message);
+            }
+
+            if (result.status === 'error') {
+                displayMessage("alert-danger", result.error);
+
+            }
+
+            console.log(result);
+        }
+
+        function displayMessage(alertClass, message) {
+            const alertDiv = document.getElementById('alertDiv');
+            alertDiv.classList.add(alertClass);
+            alertDiv.innerHTML = message;
+
+            //$(".alert").delay(5000).slideUp(200, function () {
+            //  $(this).alert('close');
+            //});
+        }
+    </script>
+</div>
