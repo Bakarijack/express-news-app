@@ -53,11 +53,20 @@
 
             if (result.status === 'ok') {
                 displayMessage("alert-success", result.message);
+
+                setTimeout(() => {
+                    alertDiv.style.display = "none";
+                    //document.getElementById('username').value = "";
+                    //document.getElementById('user_email').value = "";
+                    //document.getElementById('password').value = "";
+                    document.getElementById('signUp-form').reset();
+                    document.location = "/login";
+                }, 2000);
+
             }
 
             if (result.status === 'error') {
                 displayMessage("alert-danger", result.error);
-
             }
 
             console.log(result);
